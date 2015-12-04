@@ -1,6 +1,6 @@
 #ifndef SCIENTISTSERVICE_H
 #define SCIENTISTSERVICE_H
-
+#include "repositories/sql.h"
 #include "repositories/scientistrepository.h"
 
 /**
@@ -34,6 +34,7 @@ public:
     bool addScientist(Scientist scientist);
 private:
     ScientistRepository scientistRepo;
+    Sql scientistSql;
 };
 
 #endif // SCIENTISTSERVICE_H

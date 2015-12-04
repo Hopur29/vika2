@@ -12,10 +12,12 @@ ScientistService::ScientistService()
 
 std::vector<Scientist> ScientistService::getAllScientists(std::string orderBy, bool orderAscending)
 {
-    vector<Scientist> scientists = scientistRepo.getAllScientists();
+    /*
+     * vector<Scientist> scientists = scientistRepo.getAllScientists();
 
     std::sort(scientists.begin(), scientists.end(), ScientistComparator(orderBy, orderAscending));
-
+    */
+    vector<Scientist> scientists = scientistSql.getAllScientists();
     return scientists;
 }
 

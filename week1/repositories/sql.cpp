@@ -1,11 +1,26 @@
 #include "sql.h"
-#include <QtSql>
 
+#include <cstdlib>
+
+using namespace std;
 Sql::Sql()
 {
-    QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE");
-    QString dbName = "student_db.sqlite";
-        db.setDatabaseName(dbName);
+    QString dbName = "Scientists_db.sqlite";
+    db.setDatabaseName(dbName);
 }
+
+vector<Scientist> Sql::getAllScientists()
+{
+    vector<Scientist> scientist;
+    db.open();
+    /*
+     * TODO: SQL kóða sem nær í alla vísindamenn úr gagnagrunn
+     * og pushar þeim í vector
+    */
+    return scientist;
+
+
+}
+
 
