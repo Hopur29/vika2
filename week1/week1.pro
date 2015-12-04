@@ -1,5 +1,6 @@
 QT += core
 QT -= gui
+QT += core sql
 
 TARGET = week1
 CONFIG += console
@@ -14,7 +15,8 @@ SOURCES += main.cpp \
     services/scientistservice.cpp \
     ui/consoleui.cpp \
     utilities/utils.cpp \
-    utilities/scientistcomparator.cpp
+    utilities/scientistcomparator.cpp \
+    repositories/sql.cpp
 
 HEADERS += \
     models/scientist.h \
@@ -23,5 +25,6 @@ HEADERS += \
     utilities/constants.h \
     services/scientistservice.h \
     ui/consoleui.h \
-    utilities/scientistcomparator.h
+    utilities/scientistcomparator.h \
+    repositories/sql.h
 
