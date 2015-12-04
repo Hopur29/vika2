@@ -4,6 +4,9 @@
 *.o
 *.obj
 
+# User files
+*.user
+
 # Precompiled Headers
 *.gch
 *.pch
