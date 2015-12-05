@@ -23,10 +23,10 @@ std::vector<Scientist> ScientistService::getAllScientists(std::string orderBy, b
 
 std::vector<Scientist> ScientistService::searchForScientists(std::string searchTerm)
 {
-    return scientistRepo.searchForScientists(searchTerm);
+    return scientistSql.searchForScientists(searchTerm);
 }
 
 bool ScientistService::addScientist(Scientist scientist)
 {
-    return scientistRepo.addScientist(scientist);
+    return scientistSql.addScientist(scientist);
 }

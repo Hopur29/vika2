@@ -5,11 +5,14 @@
 #include <vector>
 #include <string>
 #include "models/scientist.h"
+
 class Sql
 {
 public:
     Sql();
     std::vector<Scientist> getAllScientists();
+    std::vector<Scientist> searchForScientists(std::string searchTerm);
+    bool addScientist(Scientist);
 private:
     QSqlDatabase db;
 };

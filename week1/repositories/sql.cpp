@@ -19,8 +19,25 @@ vector<Scientist> Sql::getAllScientists()
      * og pushar þeim í vector
     */
     return scientist;
-
-
 }
 
+vector<Scientist> Sql::searchForScientists(string searchTerm)
+{
+    vector<Scientist> scientist;
+    db.open();
+    /*
+     * TODO: SQL kóða sem leitar í gagnagrunninum eftir searchTerm færibreytunni
+     * og pushar leitarniðurstöðum í vector
+    */
+    return scientist;
+}
+
+bool Sql::addScientist(Scientist scientist)
+{
+    /*
+     * Insertar scientist inn í gagnagrunn
+     * returnar false ef ekki tekst að bæta scientist við
+     */
+    return true;
+}
 
