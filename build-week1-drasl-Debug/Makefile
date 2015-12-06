@@ -56,7 +56,8 @@ SOURCES       = ../week1/main.cpp \
 		../week1/utilities/utils.cpp \
 		../week1/utilities/scientistcomparator.cpp \
 		../week1/repositories/sql.cpp \
-		../week1/services/computerservice.cpp 
+		../week1/services/computerservice.cpp \
+		../week1/models/computer.cpp 
 OBJECTS       = main.o \
 		scientist.o \
 		scientistrepository.o \
@@ -65,7 +66,8 @@ OBJECTS       = main.o \
 		utils.o \
 		scientistcomparator.o \
 		sql.o \
-		computerservice.o
+		computerservice.o \
+		computer.o
 DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/qdevice.pri \
 		../../../Qt/5.5/clang_64/mkspecs/features/device_config.prf \
@@ -215,7 +217,8 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../week1/ui/consoleui.h \
 		../week1/utilities/scientistcomparator.h \
 		../week1/repositories/sql.h \
-		../week1/services/computerservice.h ../week1/main.cpp \
+		../week1/services/computerservice.h \
+		../week1/models/computer.h ../week1/main.cpp \
 		../week1/models/scientist.cpp \
 		../week1/repositories/scientistrepository.cpp \
 		../week1/services/scientistservice.cpp \
@@ -223,7 +226,8 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../week1/utilities/utils.cpp \
 		../week1/utilities/scientistcomparator.cpp \
 		../week1/repositories/sql.cpp \
-		../week1/services/computerservice.cpp
+		../week1/services/computerservice.cpp \
+		../week1/models/computer.cpp
 QMAKE_TARGET  = week1
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = week1
@@ -569,8 +573,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../week1/models/scientist.h ../week1/repositories/scientistrepository.h ../week1/utilities/utils.h ../week1/utilities/constants.h ../week1/services/scientistservice.h ../week1/ui/consoleui.h ../week1/utilities/scientistcomparator.h ../week1/repositories/sql.h ../week1/services/computerservice.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../week1/main.cpp ../week1/models/scientist.cpp ../week1/repositories/scientistrepository.cpp ../week1/services/scientistservice.cpp ../week1/ui/consoleui.cpp ../week1/utilities/utils.cpp ../week1/utilities/scientistcomparator.cpp ../week1/repositories/sql.cpp ../week1/services/computerservice.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../week1/models/scientist.h ../week1/repositories/scientistrepository.h ../week1/utilities/utils.h ../week1/utilities/constants.h ../week1/services/scientistservice.h ../week1/ui/consoleui.h ../week1/utilities/scientistcomparator.h ../week1/repositories/sql.h ../week1/services/computerservice.h ../week1/models/computer.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../week1/main.cpp ../week1/models/scientist.cpp ../week1/repositories/scientistrepository.cpp ../week1/services/scientistservice.cpp ../week1/ui/consoleui.cpp ../week1/utilities/utils.cpp ../week1/utilities/scientistcomparator.cpp ../week1/repositories/sql.cpp ../week1/services/computerservice.cpp ../week1/models/computer.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -728,6 +732,12 @@ sql.o: ../week1/repositories/sql.cpp ../week1/repositories/sql.h \
 
 computerservice.o: ../week1/services/computerservice.cpp ../week1/services/computerservice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o computerservice.o ../week1/services/computerservice.cpp
+
+computer.o: ../week1/models/computer.cpp ../week1/models/Computer.h \
+		../week1/utilities/utils.h \
+		../week1/models/scientist.h \
+		../week1/utilities/constants.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o computer.o ../week1/models/computer.cpp
 
 ####### Install
 
