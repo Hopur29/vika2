@@ -1,0 +1,12 @@
+INPUT(
+./release\main.o
+./release\scientist.o
+./release\scientistrepository.o
+./release\scientistservice.o
+./release\consoleui.o
+./release\utils.o
+./release\scientistcomparator.o
+./release\sql.o
+./release\computerservice.o
+./release\computer.o
+);
