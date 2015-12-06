@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "models/scientist.h"
+#include "models/computer.h"
 
 class Sql
 {
@@ -13,6 +14,10 @@ public:
     std::vector<Scientist> getAllScientists();
     std::vector<Scientist> searchForScientists(std::string searchTerm);
     bool addScientist(Scientist);
+    std::vector<Computer> getAllComputers();
+    std::vector<Computer> searchForComputers(std::string searchTerm);
+    bool addComputer(Computer);
+
 private:
     QSqlDatabase db;
 };
