@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     ui/consoleui.cpp \
     utilities/utils.cpp \
     utilities/scientistcomparator.cpp \
-    repositories/sql.cpp
+    repositories/sql.cpp \
+    services/computerservice.cpp
 
 HEADERS += \
     models/scientist.h \
@@ -26,5 +27,6 @@ HEADERS += \
     services/scientistservice.h \
     ui/consoleui.h \
     utilities/scientistcomparator.h \
-    repositories/sql.h
+    repositories/sql.h \
+    services/computerservice.h
 
