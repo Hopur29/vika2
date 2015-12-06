@@ -1,10 +1,10 @@
-#include "computerservice.h"
-#include "utilities/Computercomparator.h"
+#include "services/computerservice.h"
+// #include "utilities/Computercomparator.h"
 #include <algorithm>
 
 using namespace std;
 
-Computerservice::Computerservice()
+ComputerService::ComputerService()
 {
 
 }
@@ -16,7 +16,7 @@ std::vector<Computer> ComputerService::getAllComputers(std::string orderBy, bool
 
     std::sort(Computers.begin(), Computers.end(), ComputerComparator(orderBy, orderAscending));
     */
-    vector<Computer> Computers = ComputerSql.getAllComputers();
+    vector<Computer> Computers = computerSql.getAllComputers();
     return Computers;
 }
 
