@@ -1,7 +1,7 @@
 #ifndef SQL_H
 #define SQL_H
 #include <QtSql>
-#include <QSqlQuery>
+
 #include <vector>
 #include <string>
 #include "models/scientist.h"
@@ -11,7 +11,7 @@ class Sql
 {
 public:
     Sql();
-    std::vector<Scientist> getAllScientists();
+    std::vector<Scientist> getAllScientists(std::string orderBy, bool orderAscending);
     std::vector<Scientist> searchForScientists(std::string searchTerm);
     bool addScientist(Scientist);
     std::vector<Computer> getAllComputers();
@@ -20,6 +20,8 @@ public:
 
 private:
     QSqlDatabase db;
+    QSqlQuery query;
+    Scientist getScientistQuery(QSqlQuery query);
 };
 
 #endif // SQL_H
