@@ -50,6 +50,10 @@ char ConsoleUI::display()
             displaySearchMenu(ans);
             return ans;
             break;
+        case command::relations:
+            displayRelationsMenu();
+            return getAns();
+            break;
         case command::sort:
             ans = getSOrC();
             displaySortMenu(ans);
@@ -93,6 +97,10 @@ void ConsoleUI::readInput(char ans)
     {
         lastCommand = command::menu;
     }
+    else if (userInput == "relations")
+    {
+        lastCommand = command::relations;
+    }
     else if (userInput == "quit")
     {
         lastCommand = command::quit;
@@ -110,6 +118,10 @@ void ConsoleUI::readInput(char ans)
         else if (lastCommand == command::search)
         {
             searchCommandHandler(userInput, ans);
+        }
+        else if (lastCommand == command::relations)
+        {
+            relationsCommandHandler(userInput);
         }
         else
         {
@@ -157,7 +169,11 @@ void ConsoleUI::addCommandHandler(string userInput, char ans)
             displayError("There was an error in your input.");
         }
     }
+}
 
+void ConsoleUI::relationsCommandHandler(std::string userInput)
+{
+    addRelations();
 }
 
 void ConsoleUI::sortCommandHandler(std::string userInput, char ans)
@@ -204,13 +220,16 @@ void ConsoleUI::displayMenu()
 {
     cout << "Enter a command:\n\n";
     cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << "add:" << "Adds a scientist\n";
+         << "add:" << "To Add\n";
 
     cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << "display:" << "Displays scientists\n";
+         << "display:" << "TO Display list\n";
 
     cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << "search:" << "Search for a scientist\n";
+         << "search:" << "To Search\n";
+
+    cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+         << "relation:" << "TO see relations\n";
 
     cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
          << "quit:" << "Quits the program\n\n";
@@ -274,6 +293,11 @@ void ConsoleUI::displaySearchMenu(char ans)
         cout << "If you would like to go back to the main menu, please type: back\n";
         cout << "Input: ";
     }
+}
+
+void ConsoleUI::displayRelationsMenu()
+{
+    cout << "Scientists who have worked on specified computer";
 }
 
 void ConsoleUI::displaySortMenu(char ans)
@@ -381,9 +405,9 @@ void ConsoleUI::displayComputers(std::vector<Computer> computers)
     cout << "Printing all computers:\n";
 
     cout << setw(20) << std::left << "Name:"
-         << setw(8) << std::left << "Year built:"
+         << setw(12) << std::left << "Year:"
          << setw(12) << std::left << "Type:"
-         << setw(12) << std::left << "Is built:" << endl;
+         << setw(12) << std::left << "built:" << endl;
 
     for (unsigned int i = 0; i < computers.size(); i++)
     {
@@ -402,6 +426,10 @@ void ConsoleUI::displayComputers(std::vector<Computer> computers)
              << setw(12) << std::left << computers.at(i).getType()
              << setw(12) << std::left << isBuilt << endl;
     }
+}
+bool ConsoleUI::addRelations()
+{
+    return service.addRelations();
 }
 
 bool ConsoleUI::addScientist(string data)

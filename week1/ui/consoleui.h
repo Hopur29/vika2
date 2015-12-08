@@ -14,6 +14,7 @@ enum command {
     search,
     sort,
     back,
+    relations,
     quit,
     unknown
 };
@@ -69,6 +70,8 @@ private:
      */
     void searchCommandHandler(std::string userInput, char ans);
 
+    void relationsCommandHandler(std::string userInput);
+
     /**
      * @brief addScientist attempts to add a scientist
      * @param data A string containing the user input
@@ -83,6 +86,7 @@ private:
      */
     bool addComputer(std::string data);
 
+    bool addRelations();
     /**
      * @brief setSort attempts to change how scientists will be sorted based on userinput
      * @param sortCommand the sort rule, rules are stored in constants.h
@@ -96,7 +100,7 @@ private:
      * @return true if it was a success, false if it was a failure
      */
     bool setSortC(std::string sortCommand);
-
+    void displayRelationsMenu();
     void displayError(std::string error);
 
 
