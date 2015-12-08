@@ -390,15 +390,15 @@ void ConsoleUI::displayComputers(std::vector<Computer> computers)
         string isBuilt;
         if(computers.at(i).getIsBuilt())
         {
-            isBuilt = "it is built";
+            isBuilt = "built";
         }
         else
         {
-            isBuilt = "it is not built";
+            isBuilt = "not built";
         }
 
         cout << setw(20) << std::left << computers.at(i).getName()
-             << setw(8) << std::left << computers.at(i).getBuiltYear()
+             << setw(12) << std::left << computers.at(i).getBuiltYear()
              << setw(12) << std::left << computers.at(i).getType()
              << setw(12) << std::left << isBuilt << endl;
     }
