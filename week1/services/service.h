@@ -30,8 +30,6 @@ public:
      */
     bool addScientist(Scientist scientist);
 
-
-
     /**
      * @brief getAllcomputers fetches computers from the computerRepository and sorts them
      * @param orderBy Which column the computers should be sorted on

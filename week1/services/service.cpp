@@ -13,12 +13,8 @@ Service::Service()
 
 std::vector<Scientist> Service::getAllScientists(std::string orderBy, bool orderAscending)
 {
-    /*
-     * vector<Scientist> scientists = scientistRepo.getAllScientists();
+    vector<Scientist> scientists = sqlDatabase.getAllScientists(orderBy, orderAscending);
 
-    std::sort(scientists.begin(), scientists.end(), ScientistComparator(orderBy, orderAscending));
-    */
-    vector<Scientist> scientists = sqlDatabase.getAllScientists();
     return scientists;
 }
 
@@ -34,12 +30,8 @@ bool Service::addScientist(Scientist scientist)
 
 std::vector<Computer> Service::getAllComputers(std::string orderBy, bool orderAscending)
 {
-    /*
-     * vector<Computer> Computers = ComputerRepo.getAllComputers();
+    vector<Computer> Computers = sqlDatabase.getAllComputers(orderBy, orderAscending);
 
-    std::sort(Computers.begin(), Computers.end(), ComputerComparator(orderBy, orderAscending));
-    */
-    vector<Computer> Computers = sqlDatabase.getAllComputers();
     return Computers;
 }
 
