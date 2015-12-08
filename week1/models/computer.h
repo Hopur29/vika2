@@ -14,7 +14,7 @@ public:
     std::string getType() const;
     bool getIsBuilt() const;
 
-
+    bool contains(std::string searchTerm);
 private:
     std::string name;
     int buildYear;

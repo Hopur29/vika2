@@ -32,3 +32,27 @@ bool Computer::getIsBuilt() const
 {
     return isBuilt;
 }
+bool Computer::contains(std::string searchTerm)
+{
+    string searchTermLower = utils::stringToLower(searchTerm);
+
+    string nameLower = utils::stringToLower(name);
+    if (nameLower.find(searchTermLower) != string::npos)
+    {
+        return true;
+    }
+
+    string yearBuilt = utils::intToString(buildYear);
+    if (yearBuilt.find(searchTerm) != string::npos)
+    {
+        return true;
+    }
+
+    string typeLower = utils::stringToLower(type);
+    if (typeLower.find(searchTermLower) != string::npos)
+    {
+        return true;
+    }
+
+    return false;
+}

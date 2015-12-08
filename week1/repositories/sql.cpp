@@ -90,47 +90,103 @@ bool Sql::addScientist(Scientist scientist)
 {
     query.prepare("INSERT INTO scientists(name, sex, born_year, death_year)"
                "VALUES(:name, :sex, :born_year, :death_year)");
+
     query.bindValue(":name", scientist.getName().c_str());
     QString sex = QString::fromStdString(std::to_string(scientist.getSex()));
     query.bindValue(":sex", sex);
     query.bindValue(":born_year", scientist.getYearBorn());
     query.bindValue(":death_year", scientist.getYearDied());
+
     if(query.exec())
     {
      return true;
     }
     return false;
-
 }
 
-vector<Computer> Sql::getAllComputers()
+vector<Computer> Sql::getAllComputers(std::string orderBy, bool orderAscending)
 {
-    vector<Computer> computers;
-    //db.open();
+    if(orderBy == "name")
+    {
+        if(orderAscending)
+        {
+            query.exec("SELECT * FROM Computers ORDER BY Name ASC");
+        }
+        else
+        {
+            query.exec("SELECT * FROM Computers ORDER BY Name DESC");
+        }
+    }
+    if(orderBy == "born")
+    {
+        if(orderAscending)
+        {
+            query.exec("SELECT * FROM Computers ORDER BY build_year ASC");
+        }
+        else
+        {
+            query.exec("SELECT * FROM Computers ORDER BY build_year DESC");
+        }
+    }
+    if(orderBy == "yearDied")
+    {
+        if(orderAscending)
+        {
+            query.exec("SELECT * FROM Computers ORDER BY type ASC");
+        }
+        else
+        {
+            query.exec("SELECT * FROM Computers ORDER BY type DESC");
+        }
+    }
 
-    /*
-     * TODO: SQL kóða sem nær í allar tölvurnar úr gagnagrunn
-     * og pushar þeim í vector
-    */
-    return computers;
+    vector<Computer> allComputers;
+    while(query.next())
+    {
+        allComputers.push_back(getComputerQuery(query));
+    }
+    return allComputers;
+}
+
+Computer Sql::getComputerQuery(QSqlQuery query)
+{
+    string name = query.value("name").toString().toStdString();
+    int birth = query.value("Build_year").toUInt();
+    string type = query.value("type").toString().toStdString();
+    bool is_built = query.value("is_Built").toUInt();
+
+    return Computer(name, birth, type, is_built);
 }
 
 vector<Computer> Sql::searchForComputers(std::string searchTerm)
 {
-    vector<Computer> computer;
-    //db.open();
-    /*
-     * TODO: SQL kóða sem leitar í gagnagrunninum eftir searchTerm færibreytunni
-     * og pushar leitarniðurstöðum í vector
-    */
-    return computer;
+    vector<Computer> allComputers = getAllComputers("name", true);
+    vector<Computer> filteredComputers;
+
+    for (unsigned int i = 0; i < allComputers.size(); i++)
+    {
+        if (allComputers.at(i).contains(searchTerm))
+        {
+            filteredComputers.push_back(allComputers.at(i));
+        }
+    }
+
+    return filteredComputers;
 }
 
-bool Sql::addComputer(Computer)
+bool Sql::addComputer(Computer comp)
 {
-    /*
-     * Insertar computer inn í gagnagrunn
-     * returnar false ef ekki tekst að bæta scientist við
-     */
-    return true;
+    query.prepare("INSERT INTO Computers(Name, Build_year, type, Is_built)"
+               "VALUES(:Name, :Build_year, :type, :Is_built)");
+
+    query.bindValue(":Name", comp.getName().c_str());
+    query.bindValue(":Build_year", comp.getBuiltYear());
+    query.bindValue(":type", comp.getType().c_str());
+    query.bindValue(":Is_built", comp.getIsBuilt());
+
+    if(query.exec())
+    {
+        return true;
+    }
+    return false;
 }
