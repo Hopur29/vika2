@@ -1,5 +1,4 @@
 #include "utilities/utils.h"
-
 #include <sstream>
 #include <cstdlib>
 

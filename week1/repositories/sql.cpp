@@ -51,6 +51,17 @@ vector<Scientist> Sql::getAllScientists(std::string orderBy, bool orderAscending
             query.exec("SELECT * FROM Scientists ORDER BY death_year DESC");
         }
     }
+    if(orderBy == "nationality")
+    {
+        if(orderAscending)
+        {
+            query.exec("SELECT * FROM Scientists ORDER BY nationality ASC");
+        }
+        else
+        {
+            query.exec("SELECT * FROM Scientists ORDER BY nationality DESC");
+        }
+    }
 
     vector<Scientist> allScientist;
     while(query.next())
@@ -66,8 +77,9 @@ Scientist Sql::getScientistQuery(QSqlQuery query)
     enum sexType sex = utils::stringToSex(query.value("sex").toString().toStdString());
     int birth = query.value("born_year").toUInt();
     int death = query.value("death_year").toUInt();
+    string nationality = query.value("nationality").toString().toStdString();
 
-    return Scientist(name, sex, birth, death);
+    return Scientist(name, sex, birth, death, nationality);
 }
 
 vector<Scientist> Sql::searchForScientists(string searchTerm)
@@ -88,14 +100,15 @@ vector<Scientist> Sql::searchForScientists(string searchTerm)
 
 bool Sql::addScientist(Scientist scientist)
 {
-    query.prepare("INSERT INTO scientists(name, sex, born_year, death_year)"
-               "VALUES(:name, :sex, :born_year, :death_year)");
+    query.prepare("INSERT INTO scientists(name, sex, born_year, death_year,nationality)"
+               "VALUES(:name, :sex, :born_year, :death_year, :nationality)");
 
     query.bindValue(":name", scientist.getName().c_str());
     QString sex = QString::fromStdString(std::to_string(scientist.getSex()));
     query.bindValue(":sex", sex);
     query.bindValue(":born_year", scientist.getYearBorn());
     query.bindValue(":death_year", scientist.getYearDied());
+    query.bindValue(":nationality", scientist.getNationality().c_str());
 
     if(query.exec())
     {

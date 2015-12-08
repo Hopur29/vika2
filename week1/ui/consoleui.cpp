@@ -223,7 +223,7 @@ void ConsoleUI::displayAddMenu(char ans)
     if(ans == 's')
     {
         cout << "To add a scientist, type in:\n";
-        cout << "Name,sex,yearBorn,yearDied (optional)\n";
+        cout << "Name,sex,yearBorn,yearDied (optional), nationality\n";
         cout << "Comma separated like in the example above.\n\n";
         cout << "If you would like to go back to the main menu, please type: back\n";
         cout << "Input: ";
@@ -297,7 +297,13 @@ void ConsoleUI::displaySortMenu(char ans)
              << constants::SORT_SCIENTIST_YEAR_DIED_ASCENDING << "Sorts by year died, ascending.\n";
 
         cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-             << constants::SORT_SCIENTIST_YEAR_DIED_DESCENDING << "Sorts by year died, descending.\n\n";
+             << constants::SORT_SCIENTIST_YEAR_DIED_DESCENDING << "Sorts by year died, descending.\n";
+
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_SCIENTIST_NATIONALITY_ASCENDING << "Sorts by nationality, ascending.\n";
+
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_SCIENTIST_NATIONALITY_DESCENDING << "Sorts by nationality, descending.\n\n";
     }
     else if(ans == 'c')
     {
@@ -344,9 +350,10 @@ void ConsoleUI::displayScientists(std::vector<Scientist> scientists)
     cout << "Printing all scientists:\n";
 
     cout << setw(20) << std::left << "Name:"
-         << setw(8) << std::left << "Sex:"
+         << setw(12) << std::left << "Sex:"
          << setw(12) << std::left << "Year born:"
-         << setw(12) << std::left << "Year died:" << endl;
+         << setw(12) << std::left << "Year died:"
+         << setw(12) << std::left << "nationality:" << endl;
 
     for (unsigned int i = 0; i < scientists.size(); i++)
     {
@@ -356,9 +363,10 @@ void ConsoleUI::displayScientists(std::vector<Scientist> scientists)
         string died = (yearDied == constants::YEAR_DIED_DEFAULT_VALUE) ? "Alive" : utils::intToString(yearDied);
 
         cout << setw(20) << std::left << scientists.at(i).getName()
-             << setw(8) << std::left << scientistSex
+             << setw(12) << std::left << scientistSex
              << setw(12) << std::left << scientists.at(i).getYearBorn()
-             << setw(12) << std::left << died << endl;
+             << setw(12) << std::left << died
+             << setw(12) << std::left << scientists.at(i).getNationality() << endl;
     }
 }
 
@@ -400,7 +408,7 @@ bool ConsoleUI::addScientist(string data)
 {
     vector<string> fields = utils::splitString(data, ',');
 
-    if (fields.size() > 2 && fields.size() < 5)
+    if (fields.size() > 3 && fields.size() < 6)
     {
         string name = fields.at(0);
 
@@ -415,15 +423,17 @@ bool ConsoleUI::addScientist(string data)
         }
         int yearBorn = utils::stringToInt(fields.at(2));
 
-        if (fields.size() == 3)
+        if (fields.size() == 4)
         {
-            return service.addScientist(Scientist(name, sex, yearBorn));
+            string nationality = fields.at(3);
+            return service.addScientist(Scientist(name, sex, yearBorn, nationality));
         }
-        else
+        else if(fields.size() == 5)
         {
+            string nationality = fields.at(4);
             int yearDied = utils::stringToInt(fields.at(3));
 
-            return service.addScientist(Scientist(name, sex, yearBorn, yearDied));
+            return service.addScientist(Scientist(name, sex, yearBorn, yearDied, nationality));
         }
     }
 
@@ -479,6 +489,16 @@ bool ConsoleUI::setSortS(string sortCommand)
     else if (sortCommand == constants::SORT_SCIENTIST_YEAR_DIED_DESCENDING)
     {
         sortBy = "yearDied";
+        sortAscending = false;
+    }
+    else if(sortCommand == constants::SORT_SCIENTIST_NATIONALITY_ASCENDING)
+    {
+        sortBy = "nationality";
+        sortAscending = true;
+    }
+    else if(sortCommand == constants::SORT_SCIENTIST_NATIONALITY_DESCENDING)
+    {
+        sortBy = "nationality";
         sortAscending = false;
     }
     else

@@ -4,20 +4,22 @@
 
 using namespace std;
 
-Scientist::Scientist(string name, enum sexType sex, int yearBorn)
+Scientist::Scientist(string name, enum sexType sex, int yearBorn, string nationality)
 {
     this->name = name;
     this->sex = sex;
     this->yearBorn = yearBorn;
     this->yearDied = constants::YEAR_DIED_DEFAULT_VALUE;
+    this->nationality = nationality;
 }
 
-Scientist::Scientist(string name, enum sexType sex, int yearBorn, int yearDied)
+Scientist::Scientist(string name, enum sexType sex, int yearBorn, int yearDied, string nationality)
 {
     this->name = name;
     this->sex = sex;
     this->yearBorn = yearBorn;
     this->yearDied = yearDied;
+    this->nationality = nationality;
 }
 
 std::string Scientist::getName() const
@@ -38,6 +40,11 @@ int Scientist::getYearBorn() const
 int Scientist::getYearDied() const
 {
     return yearDied;
+}
+
+std::string Scientist::getNationality() const
+{
+   return nationality;
 }
 
 bool Scientist::contains(string searchTerm)

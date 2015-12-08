@@ -27,21 +27,22 @@ std::vector<Scientist> ScientistRepository::getAllScientists()
         {
             vector<string> fields = utils::splitString(line, constants::FILE_DELIMETER);
 
-            if (fields.size() >= 3)
+            if (fields.size() >= 4)
             {
                 string name = fields.at(0);
                 enum sexType sex = utils::stringToSex(fields.at(1));
                 int yearBorn = utils::stringToInt(fields.at(2));
+                string nationality = fields.at(4);
 
-                if (fields.size() == 3)
+                if (fields.size() == 4)
                 {
-                    scientists.push_back(Scientist(name, sex, yearBorn));
+                    scientists.push_back(Scientist(name, sex, yearBorn, nationality));
                 }
                 else
                 {
                     int yearDied = utils::stringToInt(fields.at(3));
 
-                    scientists.push_back(Scientist(name, sex, yearBorn, yearDied));
+                    scientists.push_back(Scientist(name, sex, yearBorn, yearDied, nationality));
                 }
             }
         }
@@ -80,6 +81,7 @@ bool ScientistRepository::addScientist(Scientist scientist)
         enum sexType sex = scientist.getSex();
         int yearBorn = scientist.getYearBorn();
         int yearDied = scientist.getYearDied();
+        string nationality = scientist.getNationality();
 
         file << name << constants::FILE_DELIMETER
              << sex << constants::FILE_DELIMETER
