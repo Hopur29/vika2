@@ -18,39 +18,51 @@ int ConsoleUI::start()
 {
     while(lastCommand != command::quit)
     {
-        display();
-        readInput();
+        char d = display();
+        readInput(d);
     }
 
     return 0;
 }
 
-void ConsoleUI::display()
+char ConsoleUI::display()
 {
+    char ans = ' ';
+
     switch (lastCommand)
     {
         case command::menu:
             displayMenu();
+            return ans;
             break;
         case command::add:
-            displayAddScientistMenu();
+            ans = getSOrC();
+            displayAddMenu(ans);
+            return ans;
             break;
         case command::display:
-            displayAllScientists();
+            ans = getSOrC();
+            displayAll(ans);
+            return ans;
             break;
         case command::search:
-            displayScientistSearchMenu();
+            ans = getSOrC();
+            displaySearchMenu(ans);
+            return ans;
             break;
         case command::sort:
-            displayScientistSortMenu();
+            ans = getSOrC();
+            displaySortMenu(ans);
+            return ans;
             break;
         default:
             displayUnknownCommandMenu();
+            return ans;
             break;
     }
 }
 
-void ConsoleUI::readInput()
+void ConsoleUI::readInput(char ans)
 {
     if (lastCommand == command::display)
     {
@@ -89,15 +101,15 @@ void ConsoleUI::readInput()
     {
         if (lastCommand == command::add)
         {
-            addCommandHandler(userInput);
+            addCommandHandler(userInput, ans);
         }
         else if (lastCommand == command::sort)
         {
-            sortCommandHandler(userInput);
+            sortCommandHandler(userInput, ans);
         }
         else if (lastCommand == command::search)
         {
-            searchCommandHandler(userInput);
+            searchCommandHandler(userInput, ans);
         }
         else
         {
@@ -106,33 +118,79 @@ void ConsoleUI::readInput()
     }
 }
 
-void ConsoleUI::addCommandHandler(string userInput)
+char ConsoleUI::getSOrC()
 {
-    if (addScientist(userInput)) {
-        cout << "Successfully added a scientist\n\n";
-        lastCommand = command::menu;
-    }
-    else
+    string ans;
+    cout << "write s for scientist and write c for computer: ";
+    getline(cin,ans);
+    return ans[0];
+}
+
+void ConsoleUI::addCommandHandler(string userInput, char ans)
+{
+    if(ans == 's')
     {
-        displayError("There was an error in your input.");
+        if (addScientist(userInput))
+        {
+            cout << "Successfully added a scientist\n\n";
+            lastCommand = command::menu;
+        }
+        else
+        {
+            displayError("There was an error in your input.");
+        }
+    }
+    else if(ans == 'c')
+    {
+        if (addComputer(userInput))
+        {
+            cout << "Successfully added a computer\n\n";
+            lastCommand = command::menu;
+        }
+        else
+        {
+            displayError("There was an error in your input.");
+        }
+    }
+
+}
+
+void ConsoleUI::sortCommandHandler(std::string userInput, char ans)
+{
+    if(ans == 's')
+    {
+        if (setSortS(userInput))
+        {
+            lastCommand = command::display;
+        }
+        else
+        {
+            displayError("Your input did not match any of the sort commands");
+        }
+    }
+     if(ans == 'c')
+    {
+        if (setSortC(userInput))
+        {
+            lastCommand = command::display;
+        }
+        else
+        {
+            displayError("Your input did not match any of the sort commands");
+        }
     }
 }
 
-void ConsoleUI::sortCommandHandler(string userInput)
+void ConsoleUI::searchCommandHandler(string userInput, char ans)
 {
-    if (setSort(userInput))
+    if(ans == 's')
     {
-        lastCommand = command::display;
+        displayScientists(service.searchForScientists(userInput));
     }
-    else
+    else if(ans == 'c')
     {
-        displayError("Your input did not match any of the sort commands");
+        displayComputers(service.searchForComputers(userInput));
     }
-}
-
-void ConsoleUI::searchCommandHandler(string userInput)
-{
-    displayScientists(scientistService.searchForScientists(userInput));
 }
 
 void ConsoleUI::displayMenu()
@@ -153,54 +211,109 @@ void ConsoleUI::displayMenu()
     cout << "Command: ";
 }
 
-void ConsoleUI::displayAddScientistMenu()
+void ConsoleUI::displayAddMenu(char ans)
 {
-    cout << "To add a scientist, type in:\n";
-    cout << "Name,sex,yearBorn,yearDied (optional)\n";
-    cout << "Comma separated like in the example above.\n\n";
-    cout << "If you would like to go back to the main menu, please type: back\n";
-    cout << "Input: ";
+    if(ans == 's')
+    {
+        cout << "To add a scientist, type in:\n";
+        cout << "Name,sex,yearBorn,yearDied (optional)\n";
+        cout << "Comma separated like in the example above.\n\n";
+        cout << "If you would like to go back to the main menu, please type: back\n";
+        cout << "Input: ";
+    }
+    else if(ans == 'c')
+    {
+        cout << "To add a computer, type in:\n";
+        cout << "Name,year built,type, completed or not(true or false)\n";
+        cout << "Comma separated like in the example above.\n\n";
+        cout << "If you would like to go back to the main menu, please type: back\n";
+        cout << "Input: ";
+    }
 }
 
-void ConsoleUI::displayAllScientists()
+void ConsoleUI::displayAll(char ans)
 {
-    vector<Scientist> scientists = scientistService.getAllScientists(sortBy, sortAscending);
+    if(ans == 's')
+    {
+        vector<Scientist> scientists = service.getAllScientists(sortBy, sortAscending);
 
-    displayScientists(scientists);
+        displayScientists(scientists);
+    }
+    else if(ans == 'c')
+    {
+        vector<Computer> computers = service.getAllComputers(sortBy, sortAscending);
+
+        displayComputers(computers);
+    }
 
     cout << '\n';
 
     lastCommand = command::display;
 }
 
-void ConsoleUI::displayScientistSearchMenu()
+void ConsoleUI::displaySearchMenu(char ans)
 {
-    cout << "Search for a scientist.\n\n";
+    if(ans == 's')
+    {
+        cout << "Search for a scientist.\n\n";
 
-    cout << "If you would like to go back to the main menu, please type: back\n";
-    cout << "Input: ";
+        cout << "If you would like to go back to the main menu, please type: back\n";
+        cout << "Input: ";
+    }
+    else if(ans == 'c')
+    {
+        cout << "Search for a computer.\n\n";
+
+        cout << "If you would like to go back to the main menu, please type: back\n";
+        cout << "Input: ";
+    }
 }
 
-void ConsoleUI::displayScientistSortMenu()
+void ConsoleUI::displaySortMenu(char ans)
 {
-    cout << "How should the list be sorted:\n\n";
-    cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << constants::SORT_SCIENTIST_NAME_ASCENDING << "Sorts by name, ascending.\n";
+    if(ans == 's')
+    {
+        cout << "How should the list be sorted:\n\n";
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_SCIENTIST_NAME_ASCENDING << "Sorts by name, ascending.\n";
 
-    cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << constants::SORT_SCIENTIST_NAME_DESCENDING << "Sorts by name, descending.\n";
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_SCIENTIST_NAME_DESCENDING << "Sorts by name, descending.\n";
 
-    cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << constants::SORT_SCIENTIST_YEAR_BORN_ASCENDING << "Sorts by year born, ascending.\n";
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_SCIENTIST_YEAR_BORN_ASCENDING << "Sorts by year born, ascending.\n";
 
-    cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << constants::SORT_SCIENTIST_YEAR_BORN_DESCENDING << "Sorts by year born, descending.\n";
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_SCIENTIST_YEAR_BORN_DESCENDING << "Sorts by year born, descending.\n";
 
-    cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << constants::SORT_SCIENTIST_YEAR_DIED_ASCENDING << "Sorts by year died, ascending.\n";
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_SCIENTIST_YEAR_DIED_ASCENDING << "Sorts by year died, ascending.\n";
 
-    cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << constants::SORT_SCIENTIST_YEAR_DIED_DESCENDING << "Sorts by year died, descending.\n\n";
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_SCIENTIST_YEAR_DIED_DESCENDING << "Sorts by year died, descending.\n\n";
+    }
+    else if(ans == 'c')
+    {
+        cout << "How should the list be sorted:\n\n";
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_COMPUTER_NAME_ASCENDING << "Sorts by name, ascending.\n";
+
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_COMPUTER_NAME_DESCENDING << "Sorts by name, descending.\n";
+
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_COMPUTER_YEAR_BUILT_ASCENDING << "Sorts by year built, ascending.\n";
+
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_COMPUTER_YEAR_BUILT_DESCENDING << "Sorts by year built, descending.\n";
+
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_COMPUTER_TYPE_ASCENDING << "Sorts by type, ascending.\n";
+
+        cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
+             << constants::SORT_COMPUTER_TYPE_DESCENDING << "Sorts by type, descending.\n\n";
+    }
+
 
     cout << "If you would like to go back to the main menu, please type: back\n";
 
@@ -242,6 +355,40 @@ void ConsoleUI::displayScientists(std::vector<Scientist> scientists)
     }
 }
 
+void ConsoleUI::displayComputers(std::vector<Computer> computers)
+{
+    if (computers.size() == 0)
+    {
+        cout << "No scientist found.\n";
+        return;
+    }
+
+    cout << "Printing all computers:\n";
+
+    cout << setw(20) << std::left << "Name:"
+         << setw(8) << std::left << "Year built:"
+         << setw(12) << std::left << "Type:"
+         << setw(12) << std::left << "Is built:" << endl;
+
+    for (unsigned int i = 0; i < computers.size(); i++)
+    {
+        string isBuilt;
+        if(computers.at(i).getIsBuilt())
+        {
+            isBuilt = "it is built";
+        }
+        else
+        {
+            isBuilt = "it is not built";
+        }
+
+        cout << setw(20) << std::left << computers.at(i).getName()
+             << setw(8) << std::left << computers.at(i).getBuiltYear()
+             << setw(12) << std::left << computers.at(i).getType()
+             << setw(12) << std::left << isBuilt << endl;
+    }
+}
+
 bool ConsoleUI::addScientist(string data)
 {
     vector<string> fields = utils::splitString(data, ',');
@@ -263,20 +410,39 @@ bool ConsoleUI::addScientist(string data)
 
         if (fields.size() == 3)
         {
-            return scientistService.addScientist(Scientist(name, sex, yearBorn));
+            return service.addScientist(Scientist(name, sex, yearBorn));
         }
         else
         {
             int yearDied = utils::stringToInt(fields.at(3));
 
-            return scientistService.addScientist(Scientist(name, sex, yearBorn, yearDied));
+            return service.addScientist(Scientist(name, sex, yearBorn, yearDied));
         }
     }
 
     return false;
 }
 
-bool ConsoleUI::setSort(string sortCommand)
+bool ConsoleUI::addComputer(string data)
+{
+    vector<string> fields = utils::splitString(data, ',');
+
+    if (fields.size() > 3 && fields.size() < 5)
+    {
+        string name = fields.at(0);
+        int yearBuilt = utils::stringToInt(fields.at(1));
+        string type = fields.at(2);
+        bool isBuilt = utils::stringToBool(fields.at(3));
+
+        return service.addComputer(Computer(name, yearBuilt, type, isBuilt));
+
+    }
+
+    return false;
+}
+
+
+bool ConsoleUI::setSortS(string sortCommand)
 {
     if (sortCommand == constants::SORT_SCIENTIST_NAME_ASCENDING)
     {
@@ -306,6 +472,46 @@ bool ConsoleUI::setSort(string sortCommand)
     else if (sortCommand == constants::SORT_SCIENTIST_YEAR_DIED_DESCENDING)
     {
         sortBy = "yearDied";
+        sortAscending = false;
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool ConsoleUI::setSortC(std::string sortCommand)
+{
+    if (sortCommand == constants::SORT_COMPUTER_NAME_ASCENDING)
+    {
+        sortBy = "name";
+        sortAscending = true;
+    }
+    else if (sortCommand == constants::SORT_COMPUTER_NAME_DESCENDING)
+    {
+        sortBy = "name";
+        sortAscending = false;
+    }
+    else if (sortCommand == constants::SORT_COMPUTER_YEAR_BUILT_ASCENDING)
+    {
+        sortBy = "yearBuilt";
+        sortAscending = true;
+    }
+    else if (sortCommand == constants::SORT_COMPUTER_YEAR_BUILT_DESCENDING)
+    {
+        sortBy = "yearBuilt";
+        sortAscending = false;
+    }
+    else if (sortCommand == constants::SORT_COMPUTER_TYPE_ASCENDING)
+    {
+        sortBy = "type";
+        sortAscending = true;
+    }
+    else if (sortCommand == constants::SORT_COMPUTER_TYPE_DESCENDING)
+    {
+        sortBy = "type";
         sortAscending = false;
     }
     else

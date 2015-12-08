@@ -4,33 +4,33 @@
 #include <cstdlib>
 
 namespace utils {
-    std::vector<std::string> splitString(std::string line, char delimeter) 
+    std::vector<std::string> splitString(std::string line, char delimeter)
     {
         std::vector<std::string> result;
 
         std::string currentWord = "";
 
-        for (unsigned int i = 0; i < line.length(); i++) 
+        for (unsigned int i = 0; i < line.length(); i++)
         {
             char currentChar = line[i];
 
-            if (currentChar == delimeter) 
+            if (currentChar == delimeter)
             {
                 if  (currentWord.length()) {
                     result.push_back(currentWord);
                     currentWord = "";
                 }
-            } 
-            else 
+            }
+            else
             {
-                if (currentChar != '\n') 
+                if (currentChar != '\n')
                 {
                     currentWord += currentChar;
                 }
             }
         }
 
-        if (currentWord.length()) 
+        if (currentWord.length())
         {
             result.push_back(currentWord);
         }
@@ -38,12 +38,17 @@ namespace utils {
         return result;
     }
 
-    int stringToInt(std::string str) 
+    int stringToInt(std::string str)
     {
         return atoi(str.c_str());
     }
 
-    std::string stringToLower(std::string str) 
+    bool stringToBool(std::string str)
+    {
+        return atoi(str.c_str());
+    }
+
+    std::string stringToLower(std::string str)
     {
         std::string result = "";
 
@@ -65,19 +70,19 @@ namespace utils {
         return result;
     }
 
-    std::string intToString(int number) 
+    std::string intToString(int number)
     {
         std::stringstream stream;
         stream << number;
         return stream.str();
     }
 
-    enum sexType intToSex(int number) 
+    enum sexType intToSex(int number)
     {
         return static_cast<enum sexType>(number);
     }
 
-    enum sexType stringToSex(std::string str) 
+    enum sexType stringToSex(std::string str)
     {
         return intToSex(stringToInt(str));
     }

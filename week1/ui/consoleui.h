@@ -1,7 +1,8 @@
 #ifndef CONSOLEUI_H
 #define CONSOLEUI_H
 
-#include "services/scientistservice.h"
+#include "services/service.h"
+#include <string>
 
 /**
  * @brief Holds commands that are available in the UI
@@ -32,38 +33,40 @@ private:
     /**
      * @brief display serves as a router to according display functions
      */
-    void display();
+    char display();
 
     /**
      * @brief readInput handles user input by settings commands or processing it
      */
-    void readInput();
+    void readInput(char ans);
 
     void displayMenu();
-    void displayAddScientistMenu();
-    void displayAllScientists();
-    void displayScientistSearchMenu();
-    void displayScientistSortMenu();
+    void displayAddMenu(char ans);
+    void displayAll(char ans);
+    void displaySearchMenu(char ans);
+    void displaySortMenu(char ans);
     void displayUnknownCommandMenu();
     void displayScientists(std::vector<Scientist> scientists);
+    void displayComputers(std::vector<Computer> computers);
+    char getSOrC();
 
     /**
-     * @brief addCommandHandler calls the addScientist function and notifies the user how it went
+     * @brief addCommandHandler calls the addScientist or addComputer function and notifies the user how it went
      * @param userInput the input the user is trying to create a scientist from
      */
-    void addCommandHandler(std::string userInput);
+    void addCommandHandler(std::string userInput, char ans);
 
     /**
-     * @brief sortCommandHandler calls the setSort function and notifies the user how it went
+     * @brief sortCommandHandler calls the setSortS or setSortC function and notifies the user how it went
      * @param userInput the input the user is trying to change sort from
      */
-    void sortCommandHandler(std::string userInput);
+    void sortCommandHandler(std::string userInput, char ans);
 
     /**
-     * @brief searchCommandHandler calls the scientistService displays a list of filtered users
+     * @brief searchCommandHandler calls the Service displays a list of filtered users
      * @param userInput a string sent as input to the search function
      */
-    void searchCommandHandler(std::string userInput);
+    void searchCommandHandler(std::string userInput, char ans);
 
     /**
      * @brief addScientist attempts to add a scientist
@@ -73,15 +76,30 @@ private:
     bool addScientist(std::string data);
 
     /**
+     * @brief addComputer attempts to add a computer
+     * @param data A string containing the user input
+     * @return true if it was a success, false if it was a failure
+     */
+    bool addComputer(std::string data);
+
+    /**
      * @brief setSort attempts to change how scientists will be sorted based on userinput
      * @param sortCommand the sort rule, rules are stored in constants.h
      * @return true if it was a success, false if it was a failure
      */
-    bool setSort(std::string sortCommand);
+    bool setSortS(std::string sortCommand);
+
+    /**
+     * @brief setSort attempts to change how scientists will be sorted based on userinput
+     * @param sortCommand the sort rule, rules are stored in constants.h
+     * @return true if it was a success, false if it was a failure
+     */
+    bool setSortC(std::string sortCommand);
 
     void displayError(std::string error);
 
-    ScientistService scientistService;
+
+    Service service;
     enum command lastCommand;
 
     std::string sortBy;

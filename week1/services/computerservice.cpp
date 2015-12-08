@@ -3,7 +3,7 @@
 #include <algorithm>
 
 using namespace std;
-
+/*
 ComputerService::ComputerService()
 {
 
@@ -11,11 +11,11 @@ ComputerService::ComputerService()
 
 std::vector<Computer> ComputerService::getAllComputers(std::string orderBy, bool orderAscending)
 {
-    /*
-     * vector<Computer> Computers = ComputerRepo.getAllComputers();
+
+    vector<Computer> Computers = ComputerRepo.getAllComputers();
 
     std::sort(Computers.begin(), Computers.end(), ComputerComparator(orderBy, orderAscending));
-    */
+
     vector<Computer> Computers = computerSql.getAllComputers();
     return Computers;
 }
@@ -29,3 +29,4 @@ bool ComputerService::addComputer(Computer computer)
 {
     return computerSql.addComputer(computer);
 }
+*/
