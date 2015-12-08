@@ -41,7 +41,7 @@ char ConsoleUI::display()
             return ans;
             break;
         case command::display:
-            ans = getSOrC();
+            ans = getAns();
             displayAll(ans);
             return ans;
             break;
@@ -117,12 +117,17 @@ void ConsoleUI::readInput(char ans)
         }
     }
 }
+char ConsoleUI::getAns()
+{
+    return current;
+}
 
 char ConsoleUI::getSOrC()
 {
     string ans;
     cout << "write s for scientist and write c for computer: ";
     getline(cin,ans);
+    current = ans[0];
     return ans[0];
 }
 
@@ -161,6 +166,7 @@ void ConsoleUI::sortCommandHandler(std::string userInput, char ans)
     {
         if (setSortS(userInput))
         {
+            current = ans;
             lastCommand = command::display;
         }
         else
@@ -172,6 +178,7 @@ void ConsoleUI::sortCommandHandler(std::string userInput, char ans)
     {
         if (setSortC(userInput))
         {
+            current = ans;
             lastCommand = command::display;
         }
         else
@@ -359,7 +366,7 @@ void ConsoleUI::displayComputers(std::vector<Computer> computers)
 {
     if (computers.size() == 0)
     {
-        cout << "No scientist found.\n";
+        cout << "No computer found.\n";
         return;
     }
 

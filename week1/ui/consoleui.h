@@ -38,7 +38,7 @@ private:
     /**
      * @brief readInput handles user input by settings commands or processing it
      */
-    void readInput(char ans);
+    void readInput(char d);
 
     void displayMenu();
     void displayAddMenu(char ans);
@@ -49,6 +49,7 @@ private:
     void displayScientists(std::vector<Scientist> scientists);
     void displayComputers(std::vector<Computer> computers);
     char getSOrC();
+    char getAns();
 
     /**
      * @brief addCommandHandler calls the addScientist or addComputer function and notifies the user how it went
@@ -101,7 +102,7 @@ private:
 
     Service service;
     enum command lastCommand;
-
+    char current;
     std::string sortBy;
     bool sortAscending;
 };
