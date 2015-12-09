@@ -152,13 +152,37 @@ vector<Computer> Sql::getAllComputers(std::string orderBy, bool orderAscending)
             query.exec("SELECT * FROM Computers ORDER BY type DESC");
         }
     }
-
     vector<Computer> allComputers;
     while(query.next())
     {
         allComputers.push_back(getComputerQuery(query));
     }
     return allComputers;
+}
+
+vector<Computer> Sql::getAllRelation(string searchTerm)
+{
+    vector<Computer> allComputers;
+
+    query.prepare("select c.* "
+               " from Scientists s, Computers c, ScientistsAndComputers sc "
+               " where  :name = s.name "
+               " and  s.id = sc.scientist_id"
+               " and sc.computer_id = c.id ");
+    query.bindValue(":name", searchTerm.c_str());
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            allComputers.push_back(getComputerQuery(query));
+        }
+    }
+
+
+    return allComputers;
+
+
 }
 
 Computer Sql::getComputerQuery(QSqlQuery query)
@@ -203,3 +227,6 @@ bool Sql::addComputer(Computer comp)
     }
     return false;
 }
+
+
+

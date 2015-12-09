@@ -45,3 +45,10 @@ bool Service::addComputer(Computer computer)
     return sqlDatabase.addComputer(computer);
 }
 
+std::vector<Computer> Service::searchForRelation(std::string searchTerm)
+{
+    vector<Computer> Computers = sqlDatabase.getAllRelation(searchTerm);
+
+    return Computers;
+}
+

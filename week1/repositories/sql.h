@@ -15,8 +15,10 @@ public:
     std::vector<Scientist> searchForScientists(std::string searchTerm);
     bool addScientist(Scientist);
     std::vector<Computer> getAllComputers(std::string orderBy, bool orderAscending);
+    std::vector<Computer> getAllRelation(std::string searchTerm);
     std::vector<Computer> searchForComputers(std::string searchTerm);
     bool addComputer(Computer comp);
+    bool searchRelations();
 
 private:
     QSqlDatabase db;

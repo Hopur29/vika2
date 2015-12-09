@@ -52,6 +52,8 @@ public:
      */
     bool addComputer(Computer computer);
 
+    std::vector<Computer> searchForRelation(std::string searchTerm);
+
 private:
     Sql sqlDatabase;
 };

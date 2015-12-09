@@ -50,6 +50,7 @@ private:
     void displayScientists(std::vector<Scientist> scientists);
     void displayComputers(std::vector<Computer> computers);
     char getSOrC();
+    char getSROrC();
     char getAns();
 
     /**
@@ -86,7 +87,7 @@ private:
      */
     bool addComputer(std::string data);
 
-    bool addRelations();
+    bool searchRelations();
     /**
      * @brief setSort attempts to change how scientists will be sorted based on userinput
      * @param sortCommand the sort rule, rules are stored in constants.h

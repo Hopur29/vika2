@@ -46,13 +46,9 @@ char ConsoleUI::display()
             return ans;
             break;
         case command::search:
-            ans = getSOrC();
+            ans = getSROrC();
             displaySearchMenu(ans);
             return ans;
-            break;
-        case command::relations:
-            displayRelationsMenu();
-            return getAns();
             break;
         case command::sort:
             ans = getSOrC();
@@ -97,10 +93,7 @@ void ConsoleUI::readInput(char ans)
     {
         lastCommand = command::menu;
     }
-    else if (userInput == "relations")
-    {
-        lastCommand = command::relations;
-    }
+
     else if (userInput == "quit")
     {
         lastCommand = command::quit;
@@ -119,10 +112,7 @@ void ConsoleUI::readInput(char ans)
         {
             searchCommandHandler(userInput, ans);
         }
-        else if (lastCommand == command::relations)
-        {
-            relationsCommandHandler(userInput);
-        }
+
         else
         {
             lastCommand = command::unknown;
@@ -138,6 +128,15 @@ char ConsoleUI::getSOrC()
 {
     string ans;
     cout << "write s for scientist and write c for computer: ";
+    getline(cin,ans);
+    current = ans[0];
+    return ans[0];
+}
+
+char ConsoleUI::getSROrC()
+{
+    string ans;
+    cout << "write s for scientist or write c for computer or r for relation: ";
     getline(cin,ans);
     current = ans[0];
     return ans[0];
@@ -171,10 +170,7 @@ void ConsoleUI::addCommandHandler(string userInput, char ans)
     }
 }
 
-void ConsoleUI::relationsCommandHandler(std::string userInput)
-{
-    addRelations();
-}
+
 
 void ConsoleUI::sortCommandHandler(std::string userInput, char ans)
 {
@@ -214,6 +210,10 @@ void ConsoleUI::searchCommandHandler(string userInput, char ans)
     {
         displayComputers(service.searchForComputers(userInput));
     }
+    else if(ans == 'r')
+    {
+        displayComputers(service.searchForRelation(userInput));
+    }
 }
 
 void ConsoleUI::displayMenu()
@@ -227,9 +227,6 @@ void ConsoleUI::displayMenu()
 
     cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
          << "search:" << "To Search\n";
-
-    cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
-         << "relation:" << "TO see relations\n";
 
     cout << setw(constants::MENU_COMMAND_WIDTH) << std::left
          << "quit:" << "Quits the program\n\n";
@@ -293,12 +290,19 @@ void ConsoleUI::displaySearchMenu(char ans)
         cout << "If you would like to go back to the main menu, please type: back\n";
         cout << "Input: ";
     }
+    else if(ans == 'r')
+    {
+        cout << "Search for computers connected to scientist.\n\n";
+
+        cout << "If you would like to go back to the main menu, please type: back\n";
+        cout << "Input scientist name: ";
+    }
 }
 
-void ConsoleUI::displayRelationsMenu()
+/*void ConsoleUI::displayRelationsMenu()
 {
-    cout << "Scientists who have worked on specified computer";
-}
+    cout << "serach for computers connected to scientist";
+}*/
 
 void ConsoleUI::displaySortMenu(char ans)
 {
@@ -427,10 +431,10 @@ void ConsoleUI::displayComputers(std::vector<Computer> computers)
              << setw(12) << std::left << isBuilt << endl;
     }
 }
-bool ConsoleUI::addRelations()
+/*bool ConsoleUI::searchRelations()
 {
-    return service.addRelations();
-}
+    return service.searchRelations();
+}*/
 
 bool ConsoleUI::addScientist(string data)
 {
